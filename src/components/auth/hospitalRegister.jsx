@@ -5,8 +5,11 @@ import React, { useState } from "react";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { dbService } from "../../firebase";
+import { useNavigate } from 'react-router-dom';
 
 function HospitalRegister() {
+    const navigate = useNavigate();
+
     const [inputs, setInputs] = useState({
         email: "",
         password: "",
@@ -90,7 +93,9 @@ function HospitalRegister() {
                 email: email,
                 address: fullAddress + " " + extraAddress,
                 zoneCode: zoneCode,
+                id: user,
             })
+            navigate('/login')
         })
         .catch((error) => {
             const errorCode = error.code;

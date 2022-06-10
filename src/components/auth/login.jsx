@@ -1,7 +1,12 @@
-import { TextField, Typography, Grid, Button, Box, Container, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from "@mui/material";
+import { TextField, Typography, Grid, Button, Box, Container, Radio, Link } from "@mui/material";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { Token } from "../../storage/tokenStorage";
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
+
 function Login () {
+    const navigate = useNavigate();
+
     const [inputs, setInputs] = useState({
         email: "",
         password: "",
@@ -30,7 +35,9 @@ function Login () {
         signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             const user = userCredential.user;
-            console.log(user.uid);
+            const storage = new Token(user.uid);
+            storage.save()
+            navigate('/hospital/main')
         })
         .catch((error) => {
             const errorCode = error.code;
@@ -60,7 +67,6 @@ function Login () {
                         variant="h3">
                         로그인
                     </Typography>
-
                 </Box>
                 <Box component="form" onSubmit={loginHandler} sx={{mt: 1}}>
                     <Grid container>
@@ -118,11 +124,15 @@ function Login () {
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                         >
-                            회원가입
+                            로그인
                         </Button>
+                        <Grid>
+                            <Link href="/register" variant="body2">
+                                회원이 아니시라면?
+                            </Link>
+                        </Grid>
                     </Box>
             </Container>
-
         </div>
     )
 }

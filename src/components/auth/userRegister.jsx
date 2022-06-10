@@ -36,6 +36,7 @@ function UserRegister() {
                 name: name,
                 phoneNumber: phoneNumber,
                 email: email,
+                id: user,
             })
         })
         .catch((error) => {
