@@ -19,15 +19,15 @@ function UserRegister() {
             [e.target.name]: e.target.value
         });
     };
+
     const {
         email, password, confirmPassword, name, phoneNumber,
     } = inputs;
 
     const registerHandler = (e) => {
         e.preventDefault();
-        if (password !== confirmPassword) {
-            return alert('비밀번호와 비밀번호 확인은 같아야 합니다.');
-        }
+        if (password !== confirmPassword) return alert('비밀번호와 비밀번호 확인은 같아야 합니다.');
+
         const auth = getAuth();
         createUserWithEmailAndPassword(auth, email, password)
         .then(async (userCredential) => {
@@ -47,7 +47,6 @@ function UserRegister() {
     }
 
     return (
-        <div>
             <Container component="main" maxWidth="xs">
                 <Box
                     sx={{
@@ -59,12 +58,12 @@ function UserRegister() {
                 >
                     <Typography
                         component="h1"
-                        variant="h3">
+                        variant="h3"
+                    >
                         병원가입
                     </Typography>
                     <Box component="form" onSubmit={registerHandler} sx={{ mt: 1 }}>
-                        <Grid
-                            itme xs={12}>
+                        <Grid itme xs={12}>
                             <TextField
                                 margin="normal"
                                 required
@@ -134,7 +133,6 @@ function UserRegister() {
                     </Box>
                 </Box>
             </Container>
-        </div>
     )
 }
 

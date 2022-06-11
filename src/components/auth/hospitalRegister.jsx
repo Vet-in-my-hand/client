@@ -56,15 +56,10 @@ function HospitalRegister() {
             setZoneCode(zonecode);
 
             if (data.addressType === 'R') {
-                if (data.bname !== '') {
-                    extraAddress += data.bname;
-                }
-                if (data.buildingName !== '') {
-                    extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName);
-                }
+                if (data.bname !== '') extraAddress += data.bname;
+                if (data.buildingName !== '') extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName);
                 fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
             }
-
             props.onClose()
         }
         return (
@@ -80,9 +75,8 @@ function HospitalRegister() {
 
     const registerHandler = (e) => {
         e.preventDefault();
-        if (password !== confirmPassword) {
-            return alert('비밀번호와 비밀번호 확인은 같아야 합니다.');
-        }
+        if (password !== confirmPassword) return alert('비밀번호와 비밀번호 확인은 같아야 합니다.');
+
         const auth = getAuth();
         createUserWithEmailAndPassword(auth, email, password)
         .then(async (userCredential) => {
@@ -117,7 +111,8 @@ function HospitalRegister() {
                 >
                     <Typography
                         component="h1"
-                        variant="h3">
+                        variant="h3"
+                    >
                         병원가입
                     </Typography>
                     <Box component="form" onSubmit={registerHandler} sx={{ mt: 1 }}>
@@ -169,7 +164,6 @@ function HospitalRegister() {
                                 onChange={onChange}
                                 variant="standard"
                             />
-
                             <TextField
                                 margin="normal"
                                 label="전화번호"

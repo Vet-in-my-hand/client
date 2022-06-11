@@ -1,53 +1,49 @@
-import { useState, useEffect } from 'react'
-import {
-    List,
-    ListItem,
-    ListItemText,
-    Container,
+import { 
+    Container, 
+    List, 
+    ListItem, 
+    ListItemText, 
     Button,
     Box,
-    Typography
-} from '@mui/material'
-import { dbService } from "../../firebase"
-import {
-    doc, query, collection,
-    getDoc, getDocs, where,
-    addDoc,
-} from 'firebase/firestore'
+    Typography,
+} from "@mui/material";
+import { doc, getDoc, query, collection, where, getDocs, addDoc } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { dbService } from "../../firebase";
+import CareModal from "./careModal";
 import _ from 'lodash'
-import ReserveModal from './reserveModal'
 
-function ReserveList() {
+
+function CareList() {
     const [isOpenChecked, setIsOpenChecked] = useState(false)
-    const [reserveList, setReserveList] = useState([])
+    const [careList, setCareList] = useState([])
 
     useEffect(() => {
         const key = 'userToken'
         const docRef = doc(dbService, "hospital", localStorage.getItem(key))
         getDoc(docRef)
             .then((data) => {
-                console.log(data.data())
-                const docs = query(collection(dbService, "reservation"), where("hospital", "==", data.data().hospitalName))
+                const docs = query(collection(dbService, "care"), where("hospital", "==", data.data().hospitalName))
                 const result = getDocs(docs)
                 return result
             })
             .then((result) => {
                 result.forEach(e => {
-                    setReserveList((prev) => [...prev, e.data()])
+                    setCareList((prev) => [...prev, e.data()])
                 })
             })
     }, [])
 
     const onModalButtonClickHanlder = (clicked) => () => { setIsOpenChecked(clicked) }
 
-    const onReserveEventHandler = (obj, checked) => {
-        const reservedObj = _.cloneDeep(obj)
-        addDoc(collection(dbService, 'reservation'), {
-            about: reservedObj.about,
-            date: reservedObj.date,
-            hospital: reservedObj.hospital,
-            time: reservedObj.time,
-            name: reservedObj.name,
+    const onCareEventHandler = (obj, checked) => {
+        const careObj = _.cloneDeep(obj)
+        addDoc(collection(dbService, 'care'), {
+            about: careObj.about,
+            date: careObj.date,
+            time: careObj.time,
+            name: careObj.name,
+            hospital: careObj.hospital,
         })
         setIsOpenChecked(checked)
     }
@@ -66,11 +62,12 @@ function ReserveList() {
             >
                 <Typography
                     component="h1"
-                    variant="h3">
-                        병원예약 내역
-                        <Button href="/hospital/main">
-                            홈으로
-                        </Button>
+                    variant="h3"
+                >
+                    진단 목록
+                    <Button href="/hospital/main">
+                        홈으로
+                    </Button>
                 </Typography>
             </Box>
             <List>
@@ -78,26 +75,30 @@ function ReserveList() {
                     <ListItemText primary='보호자 이름' />
                     <ListItemText primary='예약날짜' />
                     <ListItemText primary='예약시간' />
-                    <ListItemText primary='병원이름' />
+                    <ListItemText primary='진료내용' />
                 </ListItem>
-                {reserveList.map((item, i) => {
+                {careList.map((item, i) => {
                     return (
                         <ListItem
                             key={i}
                             disablePadding={true}
                         >
+                            <ListItemText
+                                sx={{ width: 200 }}
+                                primary={item.name} 
+                            />
                             <ListItemText 
                                 sx={{ width: 200 }}
-                                primary={item.name} />
+                                secondary={item.date} 
+                            />
                             <ListItemText 
                                 sx={{ width: 200 }}
-                                secondary={item.date} />
+                                secondary={item.time} 
+                            />
                             <ListItemText 
                                 sx={{ width: 200 }}
-                                secondary={item.time} />
-                            <ListItemText 
-                                sx={{ width: 200 }}
-                                secondary={item.hospital} />
+                                secondary={item.about} 
+                            />
                         </ListItem>
                     )
                 })}
@@ -108,14 +109,14 @@ function ReserveList() {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
                 >
-                    예약 추가
-            </Button>
-            <ReserveModal
+                    진료추가
+                </Button>
+            <CareModal
                 isOpenModal={isOpenChecked}
-                onReserveEvent={onReserveEventHandler}
+                onCareEvent={onCareEventHandler}
             />
         </Container>
     )
 }
 
-export default ReserveList
+export default CareList;

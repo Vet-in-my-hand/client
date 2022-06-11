@@ -1,14 +1,15 @@
-import { Container, Box, Typography, Grid, TextField, Button } from "@mui/material";
+import { Container, Box, Typography, Grid, Button, List, ListItem, ListItemText } from "@mui/material";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { dbService } from "../../firebase";
 import HospitalUpdateModal from "../modal/hospitalUpdateModal";
-import { Link } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
+import { getAuth, signOut } from "firebase/auth";
 
 function HospitalMain() {
     const [hospitalInfo, setHospitalInfo] = useState('');
     const [isPopupOpen, setIsPopupOpen] = useState(false)
+    const navigate = useNavigate();
 
     const openModal = () => {
         setIsPopupOpen(true);
@@ -21,8 +22,14 @@ function HospitalMain() {
         getHospitalInfo.call(this, setHospitalInfo)
     }, []);
 
+    const logoutHandler = () => {
+        const auth = getAuth();
+        signOut(auth);
+        localStorage.clear();
+        navigate('/login');
+    }
     return (
-            <Container component='main' maxWidth="md">
+            <Container component='main' maxWidth="md" sx={{ height: '88vh' }}>
                 <Box
                     sx={{
                         display: 'flex',
@@ -34,7 +41,7 @@ function HospitalMain() {
                     <Typography
                         component="h1"
                         variant="h3">
-                        안녕하세요 @@@님!
+                        안녕하세요 {hospitalInfo.name}님!
                     </Typography>
                 </Box>
                 <Box
@@ -43,23 +50,36 @@ function HospitalMain() {
                         flexDirection: 'column',
                         alignItems: 'center',
                         marginTop: '7%',
+                        ml: '10%'
                     }}
                 >
                     <Typography
                         component='h2'
-                        variant='h4'>
+                        variant='h4'
+                        >
                         우리병원 정보
-                    </Typography>
-                    <div>
-                        <p>영업시간: {hospitalInfo.openClose}</p>
-                        <p>진료동물: {hospitalInfo.diagnosis}</p>
-                        <p>수술가능: {hospitalInfo.operation}</p>
-                        <p>추가정보: {hospitalInfo.about}</p>
-                    </div>
-                    <Button
-                        onClick={openModal}>
+                        <Button
+                            onClick={openModal}
+                        >
                         정보수정하기
-                    </Button>
+                        </Button>
+                    </Typography>
+                    <List sx={{ width: '100%'}}>
+                        <ListItem>
+                            <ListItemText 
+                                primary="영업시간"
+                                secondary={hospitalInfo.openClose}></ListItemText>
+                            <ListItemText 
+                                primary="진료동물"  
+                                secondary={hospitalInfo.diagnosis}></ListItemText>
+                            <ListItemText 
+                                primary="수술가능"
+                                secondary={hospitalInfo.operation}></ListItemText>
+                            <ListItemText 
+                                primary="추가정보"
+                                secondary={hospitalInfo.about}></ListItemText>
+                        </ListItem>
+                    </List>
                     <div>
                     {isPopupOpen &&
                         <HospitalUpdateModal
@@ -71,15 +91,52 @@ function HospitalMain() {
                     }
                 </div>
                 </Box>
-                <Grid item xs={6}>
-                    <Link to="/hospital/reserve">
-                        <button
-                            type="button"
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        marginTop: '50px',
+                    }}>
+                    <Grid container>
+                        <Grid item xs={6}>
+                                <Button
+                                    size="large"
+                                    color="info"
+                                    href="/hospital/reserve"
+                                    variant="outlined"
+                                >
+                                    예약확인
+                                </Button>
+                        </Grid>
+                        <Grid item xs={6}>
+                                <Button
+                                    size="large"
+                                    color="info"
+                                    href="/hospital/care"
+                                    variant="outlined"
+                                >
+                                    진료내역
+                                </Button>
+                        </Grid>
+                    </Grid>
+                </Box>
+                <Box
+                    sx={{ 
+                        position: "fixed",
+                        top: '80%',
+                        left: '60%',
+                    }}>
+                        <Button
+                            size="large"
+                            color="info"
+                            fullWidth
+                            variant="contained"
+                            onClick={logoutHandler}
                         >
-                            병원 예약확인
-                        </button>
-                    </Link>
-                </Grid>
+                            로그아웃
+                        </Button>
+                </Box>
             </Container>
     )
 }

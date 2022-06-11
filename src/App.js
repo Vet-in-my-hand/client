@@ -7,6 +7,7 @@ import Register from './components/auth/register';
 import UserMain from './components/user/userMain';
 import HospitalMain from './components/hospital/hospitalMain';
 import ReserveList from './components/reserve/reserveList';
+import CareList from './components/care/careList';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path='/user/main' element={<UserMain />}></Route>
           <Route path='/hospital/main' element={<HospitalMain />}></Route>
           <Route path='/hospital/reserve' element={<ReserveList />}></Route>
+          <Route path='/hospital/care' element={<CareList />}></Route>
         </Routes>
       </BrowserRouter>
     </div>

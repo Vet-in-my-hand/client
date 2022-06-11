@@ -18,6 +18,7 @@ function Login () {
     } = inputs;
 
     const [loginOption, setLoginOption] = useState('');
+
     const handleChange = (event) => {
         setLoginOption(event.target.value);
       };
@@ -37,18 +38,16 @@ function Login () {
             const user = userCredential.user;
             const storage = new Token(user.uid);
             storage.save()
-            navigate('/hospital/main')
+            if(loginOption === 'hospital') navigate('/hospital/main')
+            else if(loginOption ==='user') navigate('/') //유저바꾸고 수정
         })
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            if(errorCode==='auth/user-not-found')
-                alert("가입한 회원이 아닙니다.")
-            else if(errorCode==='auth/wrong-password')
-                alert("비밀번호가 다릅니다.")
-            else if(errorCode==='auth/too-many-requests')
-                alert("너무 많이 로그인 시도를 했습니다. 잠시 뒤에 하세요.")
-            console.log(errorCode, errorMessage);
+            if(errorCode==='auth/user-not-found') alert("가입한 회원이 아닙니다.")
+            else if(errorCode==='auth/wrong-password') alert("비밀번호가 다릅니다.")
+            else if(errorCode==='auth/too-many-requests') alert("너무 많이 로그인 시도를 했습니다. 잠시 뒤에 하세요.")
+            console.error(errorCode, errorMessage);
           });
     }
     return (
@@ -64,7 +63,8 @@ function Login () {
                 >
                     <Typography
                         component="h1"
-                        variant="h3">
+                        variant="h3"
+                    >
                         로그인
                     </Typography>
                 </Box>
@@ -72,11 +72,11 @@ function Login () {
                     <Grid container>
                         <Grid item xs={6}>
                             <Radio
-                            checked={loginOption === 'hospital'}
-                            value="hospital"
-                            onChange={handleChange}
-                            >
-                        </Radio>
+                                checked={loginOption === 'hospital'}
+                                value="hospital"
+                                onChange={handleChange}
+                                >
+                            </Radio>
                             <label>병원으로 로그인</label>
                         </Grid>
                         <Grid item xs={6}>
@@ -89,49 +89,47 @@ function Login () {
                             <label>반려인으로 로그인</label>
                         </Grid>
                     </Grid>
-                    <Grid
-                        item xs={12}>
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                type="email"
-                                label="이메일"
-                                name="email"
-                                id="email"
-                                variant="standard"
-                                autoFocus
-                                onChange={onChange}
-                            >
-                            </TextField>
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                type="password"
-                                label="비밀번호"
-                                name="password"
-                                id="password"
-                                variant="standard"
-                                autoFocus
-                                onChange={onChange}
-                            >
-                            </TextField>
-                        </Grid>
-                        <Button
-                            type="submit"
+                    <Grid item xs={12}>
+                        <TextField
+                            margin="normal"
+                            required
                             fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
+                            type="email"
+                            label="이메일"
+                            name="email"
+                            id="email"
+                            variant="standard"
+                            autoFocus
+                            onChange={onChange}
                         >
-                            로그인
-                        </Button>
-                        <Grid>
-                            <Link href="/register" variant="body2">
-                                회원이 아니시라면?
-                            </Link>
-                        </Grid>
-                    </Box>
+                        </TextField>
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            type="password"
+                            label="비밀번호"
+                            name="password"
+                            id="password"
+                            variant="standard"
+                            onChange={onChange}
+                        >
+                        </TextField>
+                    </Grid>
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{ mt: 3, mb: 2 }}
+                    >
+                        로그인
+                    </Button>
+                    <Grid>
+                        <Link href="/register" variant="body2">
+                            회원이 아니시라면?
+                        </Link>
+                    </Grid>
+                </Box>
             </Container>
         </div>
     )
