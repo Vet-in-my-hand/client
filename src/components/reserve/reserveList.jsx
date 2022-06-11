@@ -78,7 +78,7 @@ function ReserveList() {
                     <ListItemText primary='보호자 이름' />
                     <ListItemText primary='예약날짜' />
                     <ListItemText primary='예약시간' />
-                    <ListItemText primary='병원이름' />
+                    <ListItemText primary='증상' />
                 </ListItem>
                 {reserveList.map((item, i) => {
                     return (
@@ -97,7 +97,7 @@ function ReserveList() {
                                 secondary={item.time} />
                             <ListItemText 
                                 sx={{ width: 200 }}
-                                secondary={item.hospital} />
+                                secondary={item.about} />
                         </ListItem>
                     )
                 })}

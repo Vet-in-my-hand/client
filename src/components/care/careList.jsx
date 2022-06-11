@@ -89,15 +89,15 @@ function CareList() {
                             />
                             <ListItemText 
                                 sx={{ width: 200 }}
-                                secondary={item.date} 
+                                primary={item.date} 
                             />
                             <ListItemText 
                                 sx={{ width: 200 }}
-                                secondary={item.time} 
+                                primary={item.time} 
                             />
                             <ListItemText 
                                 sx={{ width: 200 }}
-                                secondary={item.about} 
+                                primary={item.about} 
                             />
                         </ListItem>
                     )

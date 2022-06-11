@@ -5,22 +5,26 @@ import {
     TextField,
     Button,
 } from '@mui/material'
+import { getDoc, doc } from "firebase/firestore";
+import { dbService } from "../../firebase";
+
 
 function CareModal({ isOpenModal, onCareEvent }) {
     const aboutRef = useRef()
     const dateRef = useRef()
     const timeRef = useRef()
     const nameRef = useRef()
-    const hospitalRef = useRef()
 
-    const onCareButtonClickHandler = () => {
+    const onCareButtonClickHandler = async () => {
+        const key = 'userToken'
+        const ref = doc(dbService, "hospital", localStorage.getItem(key))
+        const _ref = await getDoc(ref)
         const obj = {}
-        debugger
         obj.about = aboutRef.current.value
         obj.date = dateRef.current.value
         obj.time = timeRef.current.value
         obj.name = nameRef.current.value
-        obj.hospital = hospitalRef.current.value
+        obj.hospital = _ref.data().hospitalName
         onCareEvent(obj, false)
     }
 
@@ -60,14 +64,6 @@ function CareModal({ isOpenModal, onCareEvent }) {
                     label="보호자 이름"
                     fullWidth
                     required
-                    variant="standard"
-                />
-                <TextField
-                    inputRef={hospitalRef}
-                    margin="normal"
-                    label="병원 이름"
-                    required
-                    fullWidth
                     variant="standard"
                 />
                 <Button onClick={onCareButtonClickHandler}>
