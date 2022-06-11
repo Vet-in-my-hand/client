@@ -3,6 +3,8 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { dbService } from "../../firebase";
 import HospitalUpdateModal from "../modal/hospitalUpdateModal";
+import { Link } from "react-router-dom";
+
 
 function HospitalMain() {
     const [hospitalInfo, setHospitalInfo] = useState('');
@@ -69,6 +71,18 @@ function HospitalMain() {
                     }
                 </div>
                 </Box>
+                <Grid item xs={6}>
+                            <Link to="/hospital/reserve">
+                            <button 
+                                type="button"
+                                >병원 예약확인
+                            </button>
+                            </Link>
+                        </Grid>
+                <Box>
+
+                </Box>
+
             </Container>
     )
 }
