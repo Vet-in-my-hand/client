@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { TextField, Box, Button } from '@mui/material'
-import { collection, query, where, updateDoc, doc } from "firebase/firestore"
+import { collection, query, where, updateDoc, getDocs, doc, getDoc } from "firebase/firestore"
 import { dbService } from "../../firebase"
 import './modal.css'
 
@@ -10,7 +10,7 @@ const HospitalUpdateModal = ({ open, close, info }) => {
     const operationRef = useRef()
     const aboutRef = useRef()
 
-    const onSubmitClickHandler = () => {
+    const onSubmitClickHandler = async () => {
         const obj = {}
         obj.time = timeRef.current.value
         obj.diagnosis = diagnosisRef.current.value
@@ -18,18 +18,12 @@ const HospitalUpdateModal = ({ open, close, info }) => {
         obj.about = aboutRef.current.value
 
         const key = 'userToken'
-        const ref = query(collection(dbService, "hosInfo"), where("id", "==", localStorage.getItem(key)))
-        updateDoc(ref, {
+        const _ref = doc(dbService, "hosInfo", localStorage.getItem(key))
+        updateDoc(_ref, {
             openClose: obj.time,
             diagnosis: obj.diagnosis,
             operation: obj.operation,
             about: obj.about,
-        })
-        .then(() => {
-            console.log('DB 업데이트 성공');
-        })
-        .catch((error) => {
-            console.log(error);
         })
     }
 
