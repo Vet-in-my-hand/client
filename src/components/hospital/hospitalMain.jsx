@@ -72,17 +72,14 @@ function HospitalMain() {
                 </div>
                 </Box>
                 <Grid item xs={6}>
-                            <Link to="/hospital/reserve">
-                            <button 
-                                type="button"
-                                >병원 예약확인
-                            </button>
-                            </Link>
-                        </Grid>
-                <Box>
-
-                </Box>
-
+                    <Link to="/hospital/reserve">
+                        <button
+                            type="button"
+                        >
+                            병원 예약확인
+                        </button>
+                    </Link>
+                </Grid>
             </Container>
     )
 }

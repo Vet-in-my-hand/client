@@ -7,8 +7,6 @@ import {
 } from '@mui/material'
 
 function ReserveModal({ isOpenModal, onReserveEvent }) {
-    const [onCloseModal, setOnCloseModal] = useState(isOpenModal)
-
     const aboutRef = useRef()
     const dateRef = useRef()
     const timeRef = useRef()
@@ -22,12 +20,11 @@ function ReserveModal({ isOpenModal, onReserveEvent }) {
         obj.time = timeRef.current.value
         obj.name = nameRef.current.value
         obj.hospital = hospitalRef.current.value
-        onReserveEvent(obj)
-        setOnCloseModal(false)
+        onReserveEvent(obj, false)
     }
 
     return (
-        <Modal open={onCloseModal}>
+        <Modal open={isOpenModal}>
             <Box sx={modalStyle}>
                 <TextField
                     inputRef={aboutRef}
