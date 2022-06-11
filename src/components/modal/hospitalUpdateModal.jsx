@@ -1,40 +1,40 @@
-import { async } from '@firebase/util';
-import { TextField, Box, Button } from '@mui/material';
-import { collection, query, where, getDocs, updateDoc } from "firebase/firestore";
-import { dbService } from "../../firebase";
-import './modal.css';
+import { useRef } from 'react'
+import { TextField, Box, Button } from '@mui/material'
+import { collection, query, where, updateDoc, doc } from "firebase/firestore"
+import { dbService } from "../../firebase"
+import './modal.css'
 
 const HospitalUpdateModal = ({ open, close, info }) => {
+    const timeRef = useRef()
+    const diagnosisRef = useRef()
+    const operationRef = useRef()
+    const aboutRef = useRef()
 
-    const onCloseButtonHandler = () => {
-        close(false)
-    }
+    const onSubmitClickHandler = () => {
+        const obj = {}
+        obj.time = timeRef.current.value
+        obj.diagnosis = diagnosisRef.current.value
+        obj.operation = operationRef.current.value
+        obj.about = aboutRef.current.value
 
-    const updateHandler = async (e) => {
-        e.preventDefault();
-        const openClose = e.target
-        const diagnosis = e.target.diagnosis
-        const operation = e.target.operation
-        const about = e.target.about
-
-        console.log(openClose, diagnosis, operation, about)
-        
         const key = 'userToken'
-        const ref = query(collection(dbService, "hosInfo"), where("id", "==", localStorage.getItem(key)));
-        await updateDoc(ref, {
-            openClose: openClose,
-            diagnosis: diagnosis,
-            operation: operation,
-            about: about,
+        const ref = query(collection(dbService, "hosInfo"), where("id", "==", localStorage.getItem(key)))
+        updateDoc(ref, {
+            openClose: obj.time,
+            diagnosis: obj.diagnosis,
+            operation: obj.operation,
+            about: obj.about,
         })
         .then(() => {
             console.log('DB 업데이트 성공');
         })
         .catch((error) => {
-            const errorCode = error.code;
-            const errorMassage = error.message;
-            console.log(errorCode, errorMassage);
+            console.log(error);
         })
+    }
+
+    const onCloseButtonHandler = () => {
+        close(false)
     }
 
     return (
@@ -48,13 +48,14 @@ const HospitalUpdateModal = ({ open, close, info }) => {
                         </button>
                     </header>
                     <div>
-                        <Box component="form" onSubmit={updateHandler} sx={{ mt: 1 }}>
+                        <Box component="form" sx={{ mt: 1 }}>
                             <TextField
                                 margin='normal'
                                 fullWidth
                                 name='openClose'
                                 id='openClose'
                                 variant="standard"
+                                inputRef={timeRef}
                                 label={info.openClose}
                                 >
                             </TextField>
@@ -64,6 +65,7 @@ const HospitalUpdateModal = ({ open, close, info }) => {
                                 name='diagnosis'
                                 id='diagnosis'
                                 variant="standard"
+                                inputRef={diagnosisRef}
                                 label={info.diagnosis}
                                 >
                             </TextField>
@@ -73,6 +75,7 @@ const HospitalUpdateModal = ({ open, close, info }) => {
                                 name='operation'
                                 id='operation'
                                 variant="standard"
+                                inputRef={operationRef}
                                 label={info.operation}
                                 >
                             </TextField>
@@ -82,14 +85,15 @@ const HospitalUpdateModal = ({ open, close, info }) => {
                                 name='about'
                                 id='about'
                                 variant="standard"
+                                inputRef={aboutRef}
                                 label={info.about}
                                 >
                             </TextField>
                             <Button
-                                type='submit'
                                 fullWidth
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2 }}
+                                onClick={onSubmitClickHandler}
                                 >
                                 정보수정하기
                             </Button>
