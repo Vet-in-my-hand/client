@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { TextField, Box, Button, Grid } from '@mui/material'
-import { updateDoc, doc } from "firebase/firestore"
+import { updateDoc, doc, getDoc, setDoc } from "firebase/firestore"
 import { dbService } from "../../firebase"
 import './modal.css'
 
@@ -19,12 +19,27 @@ const HospitalUpdateModal = ({ open, close, info }) => {
 
         const key = 'userToken'
         const _ref = doc(dbService, "hosInfo", localStorage.getItem(key))
-        updateDoc(_ref, {
+        const hosRef = await getDoc(_ref);
+        if(hosRef.exists()) {
+            updateDoc(_ref, {
             openClose: obj.time,
             diagnosis: obj.diagnosis,
             operation: obj.operation,
             about: obj.about,
-        })
+        })}
+        else {
+            const ref = doc(dbService, "hospital", localStorage.getItem(key))
+            const nameRef = await getDoc(ref)
+            await setDoc(doc(dbService, "hosInfo", localStorage.getItem(key)), {
+                openClose: obj.time,
+                diagnosis: obj.diagnosis,
+                operation: obj.operation,
+                about: obj.about,
+                id: localStorage.getItem(key),
+                name: nameRef.data().hospitalName,
+            })}
+        
+
         onCloseButtonHandler()
     }
 

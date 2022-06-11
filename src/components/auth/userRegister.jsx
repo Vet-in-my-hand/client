@@ -3,8 +3,11 @@ import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import { dbService } from "../../firebase";
+import { useNavigate } from "react-router-dom";
 
 function UserRegister() {
+    const navigate = useNavigate();
+
     const [inputs, setInputs] = useState({
         email: "",
         password: "",
@@ -38,6 +41,7 @@ function UserRegister() {
                 email: email,
                 id: user,
             })
+            navigate('/login')
         })
         .catch((error) => {
             const errorCode = error.code;
@@ -60,7 +64,7 @@ function UserRegister() {
                         component="h1"
                         variant="h3"
                     >
-                        병원가입
+                        반려인 가입
                     </Typography>
                     <Box component="form" onSubmit={registerHandler} sx={{ mt: 1 }}>
                         <Grid itme xs={12}>

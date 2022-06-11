@@ -39,7 +39,7 @@ function Login () {
             const storage = new Token(user.uid);
             storage.save()
             if(loginOption === 'hospital') navigate('/hospital/main')
-            else if(loginOption ==='user') navigate('/') //유저바꾸고 수정
+            else if(loginOption ==='user') navigate('/user/main') //유저바꾸고 수정
         })
         .catch((error) => {
             const errorCode = error.code;

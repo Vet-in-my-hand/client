@@ -57,11 +57,11 @@ function HospitalMain() {
                         component='h2'
                         variant='h4'
                         >
-                        우리병원 정보
+                            우리병원 정보
                         <Button
                             onClick={openModal}
                         >
-                        정보수정하기
+                            정보수정하기
                         </Button>
                     </Typography>
                     <List sx={{ width: '100%'}}>
