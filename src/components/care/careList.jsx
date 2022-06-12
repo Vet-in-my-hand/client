@@ -35,6 +35,7 @@ function CareList() {
     }, [])
 
     const onModalButtonClickHanlder = (clicked) => () => { setIsOpenChecked(clicked) }
+    const onCloseButtonHandler = (props) => { setIsOpenChecked(props) }
 
     const onCareEventHandler = (obj, checked) => {
         const careObj = _.cloneDeep(obj)
@@ -114,6 +115,7 @@ function CareList() {
             <CareModal
                 isOpenModal={isOpenChecked}
                 onCareEvent={onCareEventHandler}
+                close={onCloseButtonHandler}
             />
         </Container>
     )

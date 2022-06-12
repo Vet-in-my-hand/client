@@ -9,7 +9,7 @@ import { getDoc, doc } from "firebase/firestore";
 import { dbService } from "../../firebase";
 
 
-function CareModal({ isOpenModal, onCareEvent }) {
+function CareModal({ isOpenModal, onCareEvent, close }) {
     const aboutRef = useRef()
     const dateRef = useRef()
     const timeRef = useRef()
@@ -27,7 +27,9 @@ function CareModal({ isOpenModal, onCareEvent }) {
         obj.hospital = _ref.data().hospitalName
         onCareEvent(obj, false)
     }
-
+    const onCloseButtonHandler = () => {
+        close(false)
+    }
     return (
         <Modal open={isOpenModal}>
             <Box sx={modalStyle}>
@@ -66,14 +68,12 @@ function CareModal({ isOpenModal, onCareEvent }) {
                     required
                     variant="standard"
                 />
-                <Button onClick={onCareButtonClickHandler}>
-                    진료추가
-                </Button>
+                <Button onClick={onCareButtonClickHandler}> 진료추가 </Button>
+                <Button onClick={onCloseButtonHandler}>취소</Button>
+
             </Box>
         </Modal>
     )
-
-    
 }
 
 const modalStyle = {
