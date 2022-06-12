@@ -24,6 +24,7 @@ import ReserveModal from './reserveModal'
 function ReserveList() {
     const [isOpenChecked, setIsOpenChecked] = useState(false)
     const [reserveList, setReserveList] = useState([])
+    const [hospitalInfo, setHospitalInfo] = useState([])
 
     useEffect(() => {
         const key = 'userToken'
@@ -33,6 +34,7 @@ function ReserveList() {
                 console.log(data.data())
                 const docs = query(collection(dbService, "reservation"), where("hospital", "==", data.data().hospitalName))
                 const result = getDocs(docs)
+                setHospitalInfo(() => Object.assign({}, data.data()))
                 return result
             })
             .then((result) => {
@@ -50,7 +52,7 @@ function ReserveList() {
         addDoc(collection(dbService, 'reservation'), {
             about: reservedObj.about,
             date: reservedObj.date,
-            hospital: reservedObj.hospital,
+            hospital: hospitalInfo.hospitalName,
             time: reservedObj.time,
             name: reservedObj.name,
         })
@@ -83,7 +85,7 @@ function ReserveList() {
                     <ListItemText primary='보호자 이름' />
                     <ListItemText primary='예약날짜' />
                     <ListItemText primary='예약시간' />
-                    <ListItemText primary='증상' />
+                    <ListItemText primary='방문목적' />
                 </ListItem>
                 {reserveList.map((item, i) => {
                     return (

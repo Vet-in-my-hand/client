@@ -6,18 +6,18 @@ import {
     Button,
 } from '@mui/material'
 
-function ReserveModal({ isOpenModal, onReserveEvent, close }) {
+function UserReserveModal({ isOpenModal, onReserveEvent, close }) {
     const aboutRef = useRef()
     const dateRef = useRef()
     const timeRef = useRef()
-    const nameRef = useRef()
+    const hospitalRef = useRef()
 
     const onReserveButtonClickHandler = () => {
         const obj = {}
         obj.about = aboutRef.current.value
         obj.date = dateRef.current.value
         obj.time = timeRef.current.value
-        obj.name = nameRef.current.value
+        obj.hospital = hospitalRef.current.value
         onReserveEvent(obj, false)
     }
 
@@ -55,9 +55,9 @@ function ReserveModal({ isOpenModal, onReserveEvent, close }) {
                     variant="standard"
                 />
                 <TextField
-                    inputRef={nameRef}
+                    inputRef={hospitalRef}
                     margin="normal"
-                    label="보호자"
+                    label="병원"
                     required
                     fullWidth
                     variant="standard"
@@ -82,4 +82,4 @@ const modalStyle = {
     p: 4,
 }
 
-export default ReserveModal
+export default UserReserveModal
