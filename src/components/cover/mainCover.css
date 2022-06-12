@@ -1,0 +1,11 @@
+.img:hover {
+    transform: rotate( 45deg );
+    cursor: pointer;
+}
+.img {
+    transition: all ease 1s;
+}
+.sub {
+    margin-top: 3%;
+}
+.warp {margin-top: 13%;}
