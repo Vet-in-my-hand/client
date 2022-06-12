@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import {
     Modal,
     Box,
@@ -6,11 +6,10 @@ import {
     Button,
 } from '@mui/material'
 
-function ReserveModal({ isOpenModal, onReserveEvent }) {
+function ReserveModal({ isOpenModal, onReserveEvent, close }) {
     const aboutRef = useRef()
     const dateRef = useRef()
     const timeRef = useRef()
-    const nameRef = useRef()
     const hospitalRef = useRef()
 
     const onReserveButtonClickHandler = () => {
@@ -18,9 +17,12 @@ function ReserveModal({ isOpenModal, onReserveEvent }) {
         obj.about = aboutRef.current.value
         obj.date = dateRef.current.value
         obj.time = timeRef.current.value
-        obj.name = nameRef.current.value
         obj.hospital = hospitalRef.current.value
         onReserveEvent(obj, false)
+    }
+
+    const onCloseButtonHandler = () => {
+        close(false)
     }
 
     return (
@@ -31,45 +33,38 @@ function ReserveModal({ isOpenModal, onReserveEvent }) {
                     margin="normal"
                     required
                     fullWidth
-                    label="About"
+                    label="증상"
                     variant="standard"
                 >
                 </TextField>
                 <TextField
                     inputRef={dateRef}
                     margin="normal"
-                    label="Date"
+                    label="예약날짜"
                     required
                     fullWidth
                     variant="standard"
                 >
                 </TextField>
                 <TextField
-                    inputRef={hospitalRef}
+                    inputRef={timeRef}
                     margin="normal"
-                    label="Hospital"
-                    required
+                    label="예약시간"
                     fullWidth
+                    required
                     variant="standard"
                 />
                 <TextField
-                    inputRef={nameRef}
+                    inputRef={hospitalRef}
                     margin="normal"
-                    label="Name"
-                    fullWidth
+                    label="병원"
                     required
+                    fullWidth
                     variant="standard"
                 />
 
-                <TextField
-                    inputRef={timeRef}
-                    margin="normal"
-                    label="Time"
-                    fullWidth
-                    required
-                    variant="standard"
-                />
-                <Button onClick={onReserveButtonClickHandler}>Reserve</Button>
+                <Button onClick={onReserveButtonClickHandler}>예약추가</Button>
+                <Button onClick={onCloseButtonHandler}>취소</Button>
             </Box>
         </Modal>
     )

@@ -10,9 +10,13 @@ import {
 } from '@mui/material'
 import { dbService } from "../../firebase"
 import {
-    doc, query, collection,
-    getDoc, getDocs, where,
+    doc, 
+    query, 
+    collection,
+    getDoc, 
+    getDocs, 
     addDoc,
+    where,
 } from 'firebase/firestore'
 import _ from 'lodash'
 import ReserveModal from './reserveModal'
@@ -39,7 +43,8 @@ function ReserveList() {
     }, [])
 
     const onModalButtonClickHanlder = (clicked) => () => { setIsOpenChecked(clicked) }
-
+    const onCloseButtonHandler = (props) => { setIsOpenChecked(props) }
+        
     const onReserveEventHandler = (obj, checked) => {
         const reservedObj = _.cloneDeep(obj)
         addDoc(collection(dbService, 'reservation'), {
@@ -113,6 +118,7 @@ function ReserveList() {
             <ReserveModal
                 isOpenModal={isOpenChecked}
                 onReserveEvent={onReserveEventHandler}
+                close={onCloseButtonHandler}
             />
         </Container>
     )
