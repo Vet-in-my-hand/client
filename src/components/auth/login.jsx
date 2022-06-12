@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 function Login () {
     const navigate = useNavigate();
 
+    const [loginOption, setLoginOption] = useState('');
     const [inputs, setInputs] = useState({
         email: "",
         password: "",
@@ -16,8 +17,6 @@ function Login () {
     const {
         email, password,
     } = inputs;
-
-    const [loginOption, setLoginOption] = useState('');
 
     const handleChange = (event) => {
         setLoginOption(event.target.value);
@@ -39,7 +38,8 @@ function Login () {
             const storage = new Token(user.uid);
             storage.save()
             if(loginOption === 'hospital') navigate('/hospital/main')
-            else if(loginOption ==='user') navigate('/user/main') //유저바꾸고 수정
+            else if(loginOption ==='user') navigate('/user/main')
+            else alert("로그인 체크해야합니다!")
         })
         .catch((error) => {
             const errorCode = error.code;
@@ -50,6 +50,7 @@ function Login () {
             console.error(errorCode, errorMessage);
           });
     }
+    
     return (
         <div>
             <Container component="main" maxWidth="xs">
