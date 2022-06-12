@@ -42,6 +42,13 @@ function HospitalMain() {
                         component="h1"
                         variant="h3">
                         안녕하세요 {hospitalInfo.name}님!
+                        <Button
+                            color="error"
+                            variant="contained"
+                            onClick={logoutHandler}
+                        >
+                            로그아웃
+                        </Button>
                     </Typography>
                 </Box>
                 <Box
@@ -121,22 +128,7 @@ function HospitalMain() {
                         </Grid>
                     </Grid>
                 </Box>
-                <Box
-                    sx={{ 
-                        position: "fixed",
-                        top: '80%',
-                        left: '60%',
-                    }}>
-                        <Button
-                            size="large"
-                            color="info"
-                            fullWidth
-                            variant="contained"
-                            onClick={logoutHandler}
-                        >
-                            로그아웃
-                        </Button>
-                </Box>
+
             </Container>
     )
 }
