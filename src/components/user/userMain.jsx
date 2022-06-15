@@ -2,7 +2,7 @@ import { Container, Box, Typography, Button, List, ListItem, ListItemText } from
 import { collection, doc, getDoc, getDocs, addDoc, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { dbService } from "../../firebase";
-import ReserveModal from "../reserve/reserveModal";
+import UserReserveModal from "../reserve/userReserveModal";
 import _ from 'lodash'
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
@@ -64,7 +64,7 @@ function UserMain() {
             date: reservedObj.date,
             hospital: reservedObj.hospital,
             time: reservedObj.time,
-            name: userInfo.name,
+            name: userInfo.name,    //이름 자동
         })
         setIsOpenChecked(checked)
     }
@@ -146,12 +146,12 @@ function UserMain() {
                         </ListItem>
                 )})}
             </List>
-                <ReserveModal
+                <UserReserveModal
                     isOpenModal={isOpenChecked}
                     onReserveEvent={onReserveEventHandler}
                     close={onCloseButtonHandler}
                 >
-                </ReserveModal>
+                </UserReserveModal>
             </Box>
             <Box
                 sx={{
